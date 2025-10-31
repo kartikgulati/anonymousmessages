@@ -1,14 +1,21 @@
 import {
   Html,
   Head,
+  Font,
   Preview,
   Heading,
   Row,
   Section,
   Text,
+  Button,
 } from '@react-email/components';
 
-export default function VerificationEmail({ username, otp }) {
+interface VerificationEmailProps {
+  username: string;
+  otp: string;
+}
+
+export default function VerificationEmail({ username, otp }: VerificationEmailProps) {
   return (
     <Html lang="en" dir="ltr">
       <Head>
@@ -33,7 +40,6 @@ export default function VerificationEmail({ username, otp }) {
             If you did not request this code, please ignore this email.
           </Text>
         </Row>
-        
       </Section>
     </Html>
   );
