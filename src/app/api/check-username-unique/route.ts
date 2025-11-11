@@ -1,6 +1,5 @@
 import dbConnect from "@/lib/dbConnect";
-import User from "@/model/User";
-import {success, z} from "zod";
+import { z } from "zod";
 import { usernameValidation } from "@/schemas/signUpSchema";
 import UserModel from "@/model/User";
 
@@ -25,52 +24,54 @@ export async function GET(request: Request){
 
 await dbConnect();
 try {
-    const {searchParams} = new URL(request.url);
+    const { searchParams } = new URL(request.url);
 
+    // normalize and trim input
     const queryParams = {
-        username : searchParams.get('username')
-    }
+        username: (searchParams.get('username') ?? "").toString().trim(),
+    };
 
     //validate query params with zod
 
    const result = UsernameQuerySchema.safeParse(queryParams);
 
-   console.log(result)
-   if (!result.success) {
+     // validation failed -> return clear errors
+     if (!result.success) {
+        const usernameErrors = result.error.format().username?._errors || [];
 
-    const usernameErrors = result.error.format().username?._errors || []
-
-    return Response.json({
-        success: false,
-        message: "invalid username",
-        errors: usernameErrors
-    }, {status: 400
-    })
-
-   }
+        return Response.json(
+            {
+                success: false,
+                message: "invalid username",
+                errors: usernameErrors,
+            },
+            { status: 400 }
+        );
+     }
 
    //check is username exists in DB
 
    const {username} = result.data;
 
-  const existingVerifiedUser = await UserModel.findOne({username, isVerified: true})
+    const existingVerifiedUser = await UserModel.findOne({ username, isVerified: true });
 
-   if (existingVerifiedUser) {
+    if (existingVerifiedUser) {
+        return Response.json(
+            {
+                success: false,
+                message: "username already taken",
+            },
+            { status: 400 }
+        );
+    }
 
-     return Response.json({
-        success: false,
-        message: "username already taken",
-        
-    }, {status: 400
-    })
-   }
-
-    return Response.json({
-        success: true,
-        message: "username is available",
-        
-    }, {status: 400
-    })
+    return Response.json(
+        {
+            success: true,
+            message: "Username is available",
+        },
+        { status: 200 }
+    );
 
 
 } catch (error) {
