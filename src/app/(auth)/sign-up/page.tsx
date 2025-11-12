@@ -86,21 +86,20 @@ const onSubmit = async(data: z.infer<typeof signUpSchema>)=>{
     setUsernameMessage(message)
 
 
-    toast({
-      title: 'success',
-      description: response.data.message
-    })
+    toast.success("User registered successfully!", {
+  description: response.data.message,
+});
+
     router.replace(`/verify/${data.username}`)
     setIsSubmitting(false)
   } catch (error) {
     console.error("error signing up of user", error)
     const axiosError = error as AxiosError<ApiResponse>;
     const errorMessage = axiosError.response?.data.message
-    toast({
-      title: 'Sing up failed',
-      description: errorMessage ?? 'Error signing up user',
-      variant: 'destructive'
-    })
+
+    toast.error("Sign up failed", {
+  description: errorMessage ?? "Error signing up user",
+});
     setIsSubmitting(false)
   }
 }
