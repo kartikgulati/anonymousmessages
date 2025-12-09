@@ -105,7 +105,7 @@ const onSubmit = async(data: z.infer<typeof signUpSchema>)=>{
 }
 
   return (
-    <div className=" flex justify-center items-center">
+    <div className=" flex justify-center items-center min-h-screen ">
       <div className="w-full max-w-md p-8 space-y-8 mt-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
         <div className="text-center">
           <h1 className="text-4xl font-bold tracking-tight">
