@@ -27,7 +27,7 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next()
 }
 
-// See "Matching Paths" below to learn more
+// path config for middleware
 export const config = {
   matcher: [
     '/sign-in',

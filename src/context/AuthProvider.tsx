@@ -9,4 +9,4 @@ export default function AuthProvider({
       {children}
     </SessionProvider>
   )
-}
+}  
