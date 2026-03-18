@@ -26,7 +26,7 @@ await dbConnect();
 try {
     const { searchParams } = new URL(request.url);
 
-    // normalize and trim input
+    // trim input to get the username
     const queryParams = {
         username: (searchParams.get('username') ?? "").toString().trim(),
     };
